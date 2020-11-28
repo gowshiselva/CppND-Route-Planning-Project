@@ -27,6 +27,48 @@ This algorithm can be used to find the shortest path between two points. In this
   * Installation instructions for all operating systems can be found [here](https://github.com/cpp-io2d/P0267_RefImpl/blob/master/BUILDING.md)
   * This library must be built in a place where CMake `find_package` will be able to find it
 
+## install IO2D
+## Install and Build IO2D
+
+Installation instructions for all operating systems can be found [here](https://github.com/cpp-io2d/P0267_RefImpl/blob/master/BUILDING.md). This library must be built in a place where CMake `find_package` will be able to find it.
+
+###  Using _COREGRAPHICS/MAC_ to compile and build IO2D
+
+* Change directory into the repo and `cd` into `thirdparty` folder and download IO2D files:
+```
+git clone --recurse-submodules https://github.com/cpp-io2d/P0267_RefImpl
+```
+
+* Xcode currently comes with an old version of libc++ which lacks many of C++17 features required by IO2D. The easiest solution is to download a fresh build of libc++ from [here](http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-apple-darwin.tar.xz). Export appropriate CXX and LD flags to make clang use this version of the standard library (replace <*NEWPATH*> with path of extracted archive contents):
+```
+export CXXFLAGS="-nostdinc++ -isystem<NEWPATH>/include/c++/v1"
+export LDFLAGS="-L<NEWPATH>/lib -Wl,-rpath,<NEWPATH>/lib"
+```
+
+* Install HomeBrew package manager:
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+* Install cmake:  `brew install cmake`
+* Install make: `brew install make`
+* Install pkg-config: `brew install pkg-config`
+* Install libpng:  `brew install libpng`
+* Install graphicsmagick: `brew install graphicsmagick`
+* Install [MacPorts](https://www.macports.org/install.php), since Brew doesn't have Cairo.
+* Install Cairo: `sudo /opt/local/bin/port -N -k install cairo +x11`
+
+* Update $PATH environment variable for Brew (whereas, MacPort does it automatically):
+```
+echo `export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"` >> ~/.bash_profile
+```
+
+*  `cd` into `P0267_RefImpl` (in `thirdparty`),  and inside new `Debug` folder build and open the IO2D Xcode project:
+```
+mkdir Debug && cd Debug
+cmake -G "Xcode" --config Debug "-DCMAKE_BUILD_TYPE=Debug" -DIO2D_DEFAULT=COREGRAPHICS_MAC ../.
+open io2d.xcodeproj
+```
+
 ## Compiling and Running
 
 ### Compiling
